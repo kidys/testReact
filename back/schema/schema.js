@@ -37,16 +37,12 @@ const Query = new GraphQLObjectType({
                 ];
                 let isUser = [];
 
-                isUser = users.filter(user => {
-                    console.log("User is correct? - ",
-                        user.login === args.login && user.password === args.password ? "Yes" : "No"
-                    );
-
-                    return user.login === args.login && user.password === args.password
-                });
+                isUser = users.filter(user => user.login === args.login && user.password === args.password);
 
                 if(isUser.length > 0) {
                     const generate = makeToken(32);
+
+                    console.log(`User ${args.login} is correct!`);
 
                     return {
                         token: generate,
@@ -54,6 +50,7 @@ const Query = new GraphQLObjectType({
                     };
                 }
 
+                console.error(`User ${args.login} is in-correct!`);
                 throw new Error("Login or Password incorrect!");
             }
         }
